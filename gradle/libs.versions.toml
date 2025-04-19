@@ -12,7 +12,6 @@ webkit = "1.8.0"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
 livedata = "1.6.0"
-buildKonfig = "0.13.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,5 +39,4 @@ okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-build-konfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig" }
 
