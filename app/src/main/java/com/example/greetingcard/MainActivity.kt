@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -54,12 +57,16 @@ fun MessageCard(message: Message, modifier: Modifier = Modifier) {
             painter = painterResource(R.drawable.mimi),
             contentDescription = "Mimi",
             contentScale = ContentScale.Crop,
-            modifier = modifier.size(48.dp).clip(CircleShape)
+            modifier = modifier
+                .size(48.dp)
+                .clip(CircleShape)
+                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
         )
         Spacer(modifier = modifier.width(8.dp))
         Column {
             Text(
-                text = message.author
+                text = message.author,
+                color = MaterialTheme.colorScheme.secondary
             )
             Spacer(modifier = modifier.height(4.dp))
             Text(
@@ -92,5 +99,9 @@ fun GreetingPreview() {
 @Preview(showBackground = true)
 @Composable
 fun MessageCardPreview() {
-    MessageCard(Message("Aiman", "Meowwww"))
+    GreetingCardTheme {
+        Surface {
+            MessageCard(Message("Aiman", "Meowwww"))
+        }
+    }
 }
