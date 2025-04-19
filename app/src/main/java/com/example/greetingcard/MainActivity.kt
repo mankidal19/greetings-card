@@ -90,5 +90,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        // todo list of transactions (in-memory)
+        // todo - list above with button to check status - call billplz api
+        // todo save txns in ROOM
+
     }
 }
