@@ -3,6 +3,7 @@ package com.example.greetingcard.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.greetingcard.BuildConfig
+import com.example.greetingcard.data.Bill
 import com.example.greetingcard.data.request.BillRequest
 import com.example.greetingcard.di.api.NetworkModule
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,20 +34,15 @@ class BillPlzViewModel: ViewModel() {
     private val _billUrl = MutableStateFlow<String?>(null)
     val billUrl: StateFlow<String?> = _billUrl
 
-    fun createBill(
-        email: String,
-        name: String,
-        amountInCents: Int,
-        description: String = "Fed by $name"
-    ) {
+    fun createBill(bill: Bill) {
         val request = BillRequest(
             collectionId = BuildConfig.BILLPLZ_COLLECTION_ID,
-            email = email,
-            name = name,
-            amount = amountInCents,
+            email = bill.email,
+            name = bill.name,
+            amount = bill.amountInCents,
             callbackUrl = CALLBACK_URL,
             redirectUrl = REDIRECT_URL,
-            description = description
+            description = bill.description
         )
 
         viewModelScope.launch {

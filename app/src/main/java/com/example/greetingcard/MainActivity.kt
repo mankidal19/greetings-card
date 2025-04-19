@@ -15,7 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.example.greetingcard.data.CreateBill
+import com.example.greetingcard.data.Bill
 import com.example.greetingcard.data.Message
 import com.example.greetingcard.presentation.view.BillWebViewScreen
 import com.example.greetingcard.ui.theme.GreetingCardTheme
@@ -34,11 +34,18 @@ class MainActivity : ComponentActivity() {
                         val currentContext = LocalContext.current
                         if (showBillWebView) {
                             BillWebViewScreen(
-                                CreateBill(
+                                bill = Bill(
                                     "man.kidal19@gmail.com",
                                     "Aiman",
                                     1001 // in MYR cents
-                                )
+                                ),
+                                onPaymentCompleted = { message ->
+                                    Toast.makeText(
+                                        currentContext,
+                                        message, Toast.LENGTH_SHORT
+                                    ).show()
+                                    showBillWebView = false
+                                }
                             )
                         } else {
                             MessageCard(

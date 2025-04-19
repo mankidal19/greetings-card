@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.greetingcard.data.CreateBill
+import com.example.greetingcard.data.Bill
 import com.example.greetingcard.presentation.viewmodel.BillPlzViewModel
 
 /**
@@ -25,17 +25,14 @@ import com.example.greetingcard.presentation.viewmodel.BillPlzViewModel
 
 @Composable
 fun BillWebViewScreen(
-    createBill: CreateBill,
+    bill: Bill,
+    onPaymentCompleted: (String) -> Unit,
     viewModel: BillPlzViewModel = viewModel()
 ) {
     val billUrl = viewModel.billUrl.collectAsState().value
 
     LaunchedEffect(Unit) {
-        viewModel.createBill(
-            email = createBill.email,
-            name = createBill.name,
-            amountInCents = createBill.amountInCents
-        )
+        viewModel.createBill(bill)
     }
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -51,13 +48,7 @@ fun BillWebViewScreen(
                             ): Boolean {
                                 val currentUrl = request?.url.toString()
                                 if (currentUrl.contains(BillPlzViewModel.REDIRECT_URL)) {
-                                    Toast
-                                        .makeText(
-                                            context,
-                                            "Thank you for your payment!",
-                                            Toast.LENGTH_SHORT
-                                        )
-                                        .show()
+                                    onPaymentCompleted.invoke("Thank you for your payment, ${bill.name}!")
                                 }
                                 return false
                             }
