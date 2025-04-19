@@ -1,7 +1,17 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+}
+
+// Load secrets manually
+val secretsFile = File(rootProject.projectDir, "secrets.properties")
+val secrets: Properties? = secretsFile.takeIf { it.exists() }?.let { file ->
+    Properties().apply {
+        file.inputStream().use { load(it) }
+    }
 }
 
 android {
@@ -16,6 +26,17 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "BILLPLZ_API_KEY",
+            "\"${secrets?.getProperty("BILLPLZ_API_KEY") ?: "missing_api_key"}\""
+        )
+        buildConfigField(
+            "String",
+            "BILLPLZ_COLLECTION_ID",
+            "\"${secrets?.getProperty("BILLPLZ_COLLECTION_ID") ?: "missing_collection"}\""
+        )
     }
 
     buildTypes {
