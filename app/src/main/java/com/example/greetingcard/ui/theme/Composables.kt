@@ -44,7 +44,8 @@ fun MessageCard(message: Message, modifier: Modifier = Modifier) {
             )
             Spacer(modifier = modifier.height(4.dp))
             Text(
-                text = message.body
+                text = message.body,
+                color = MaterialTheme.colorScheme.tertiary
             )
         }
     }
