@@ -1,5 +1,6 @@
 package com.example.greetingcard.ui.theme
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -20,12 +22,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.greetingcard.R
 import com.example.greetingcard.model.Message
 
 @Composable
-fun MessageCard(message: Message, modifier: Modifier = Modifier) {
+fun MessageCard(
+    message: Message,
+    modifier: Modifier = Modifier,
+    onFeedButtonClick: (() -> Unit)? = null
+) {
     Row {
         Image(
             painter = painterResource(R.drawable.mimi),
@@ -48,6 +55,14 @@ fun MessageCard(message: Message, modifier: Modifier = Modifier) {
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
+        Spacer(modifier = modifier.width(8.dp))
+        Button(onClick = {
+            onFeedButtonClick?.invoke()
+        }) {
+            Text(
+                text = "Feed ${message.author}"
+            )
+        }
     }
 }
 
@@ -60,5 +75,28 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 .padding(24.dp)
                 .fillMaxWidth()
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    GreetingCardTheme {
+        Greeting("Meow")
+    }
+}
+
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode"
+)
+@Composable
+fun MessageCardPreview() {
+    GreetingCardTheme {
+        Surface {
+            MessageCard(Message("Aiman", "I am hangryyyyyy"))
+        }
     }
 }
