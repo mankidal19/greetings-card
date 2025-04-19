@@ -17,6 +17,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -32,8 +35,10 @@ import com.example.greetingcard.ui.theme.GreetingCardTheme
 fun MessageCard(
     message: Message,
     modifier: Modifier = Modifier,
-    onFeedButtonClick: (() -> Unit)? = null
+    onFeedButtonClick: ((Int) -> Unit)? = null
 ) {
+    // Generate a random amount between 100 and 999 (for example, in cents/sen)
+    val randomAmount by remember { mutableIntStateOf((100..9999).random()) }
     Row {
         Image(
             painter = painterResource(R.drawable.mimi),
@@ -58,10 +63,10 @@ fun MessageCard(
         }
         Spacer(modifier = modifier.width(8.dp))
         Button(onClick = {
-            onFeedButtonClick?.invoke()
+            onFeedButtonClick?.invoke(randomAmount)
         }) {
             Text(
-                text = "Feed ${message.author}"
+                text = "Feed ${message.author} for \nRM ${randomAmount/100.0}"
             )
         }
     }

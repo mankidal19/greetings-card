@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -28,6 +29,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             GreetingCardTheme {
                 var showBillWebView by remember { mutableStateOf(false) }
+                var billAmount by remember { mutableIntStateOf(0) }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Surface(modifier = Modifier.padding(innerPadding)) {
@@ -37,7 +39,7 @@ class MainActivity : ComponentActivity() {
                                 bill = Bill(
                                     "man.kidal19@gmail.com",
                                     "Aiman",
-                                    1001 // in MYR cents
+                                    billAmount // in MYR cents
                                 ),
                                 onPaymentCompleted = { message ->
                                     Toast.makeText(
@@ -53,7 +55,8 @@ class MainActivity : ComponentActivity() {
                                     "Mimi",
                                     "Meeeeowwwwwwwwww"
                                 ),
-                                onFeedButtonClick = {
+                                onFeedButtonClick = { amount ->
+                                    billAmount = amount
                                     showBillWebView = true
                                     // Toast.makeText(currentContext, "Feeding in progress!", Toast.LENGTH_SHORT).show()
                                 }
