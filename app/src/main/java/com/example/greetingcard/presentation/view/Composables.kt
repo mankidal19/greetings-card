@@ -1,4 +1,4 @@
-package com.example.greetingcard.ui.theme
+package com.example.greetingcard.presentation.view
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.greetingcard.R
 import com.example.greetingcard.data.Message
+import com.example.greetingcard.ui.theme.GreetingCardTheme
 
 @Composable
 fun MessageCard(
