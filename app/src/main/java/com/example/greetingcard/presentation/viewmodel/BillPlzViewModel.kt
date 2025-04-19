@@ -16,8 +16,11 @@ import java.util.logging.Logger
 
 class BillPlzViewModel: ViewModel() {
 
-    private val CALLBACK_URL = "https://your-backend.com/callback"
-    private val REDIRECT_URL = "https://your-app.com/redirect"
+    companion object {
+        const val CALLBACK_URL = "https://your-backend.com/callback"
+        const val REDIRECT_URL = "https://your-app.com/redirect"
+    }
+
     private val LOGGER = Logger.getLogger(BillPlzViewModel::class.java.name)
     /*
     * Why StateFlow instead of LiveData?
@@ -34,7 +37,7 @@ class BillPlzViewModel: ViewModel() {
         email: String,
         name: String,
         amountInCents: Int,
-        description: String = ""
+        description: String = "Fed by $name"
     ) {
         val request = BillRequest(
             collectionId = BuildConfig.BILLPLZ_COLLECTION_ID,

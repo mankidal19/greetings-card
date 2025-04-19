@@ -1,7 +1,9 @@
 package com.example.greetingcard.presentation.view
 
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -11,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.greetingcard.data.CreateBill
@@ -36,11 +39,29 @@ fun BillWebViewScreen(
     }
 
     Surface(modifier = Modifier.fillMaxSize()) {
+        val currentContext = LocalContext.current
         billUrl?.let { url ->
             AndroidView(
                 factory = { context ->
                     WebView(context).apply {
-                        webViewClient = WebViewClient()
+                        webViewClient = object : WebViewClient() {
+                            override fun shouldOverrideUrlLoading(
+                                view: WebView?,
+                                request: WebResourceRequest?
+                            ): Boolean {
+                                val currentUrl = request?.url.toString()
+                                if (currentUrl.contains(BillPlzViewModel.REDIRECT_URL)) {
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            "Thank you for your payment!",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                        .show()
+                                }
+                                return false
+                            }
+                        }
                         // Using setJavaScriptEnabled can
                         // introduce XSS vulnerabilities
                         // into your application
