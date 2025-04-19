@@ -15,7 +15,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  */
 
 object NetworkModule {
-    private val BILLPLZ_BASE_URL = "https://www.billplz.com/api/"
+    private val BILLPLZ_BASE_URL = "https://www.billplz-sandbox.com/api/"
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
