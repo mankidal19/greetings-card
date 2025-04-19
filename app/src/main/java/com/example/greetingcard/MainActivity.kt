@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.greetingcard.model.Message
 import com.example.greetingcard.ui.theme.GreetingCardTheme
 
 class MainActivity : ComponentActivity() {
@@ -35,13 +37,25 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun MessageCard(message: Message, modifier: Modifier = Modifier) {
+    Column {
+        Text(
+            text = message.author
+        )
+        Text(
+            text = message.body
+        )
+    }
+}
+
+@Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Surface(modifier = Modifier.padding(horizontal = 16.dp), color = Color.Magenta) {
         Text(
             text = "Hello my name is $name!",
             modifier = modifier
-                        .padding(24.dp)
-                        .fillMaxWidth()
+                .padding(24.dp)
+                .fillMaxWidth()
         )
     }
 }
@@ -52,4 +66,10 @@ fun GreetingPreview() {
     GreetingCardTheme {
         Greeting("Meow")
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MessageCardPreview() {
+    MessageCard(Message("Aiman", "Meowwww"))
 }
