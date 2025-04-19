@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.greetingcard.presentation.viewmodel.BillPlzViewModel
 
 /**
@@ -20,8 +19,7 @@ import com.example.greetingcard.presentation.viewmodel.BillPlzViewModel
 fun BillWebViewScreen(
     billUrl: String,
     onPaymentCompleted: (String) -> Unit,
-    onBackPressed: () -> Unit,
-    viewModel: BillPlzViewModel = viewModel()
+    onBackPressed: () -> Unit
 ) {
     BackHandler(onBack = onBackPressed)
 
