@@ -1,4 +1,4 @@
-package com.example.greetingcard.model
+package com.example.greetingcard.data
 
 data class Message(
     val author: String,

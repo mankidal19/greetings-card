@@ -7,11 +7,8 @@ plugins {
 }
 
 // Load secrets manually
-val secretsFile = File(rootProject.projectDir, "secrets.properties")
-val secrets: Properties? = secretsFile.takeIf { it.exists() }?.let { file ->
-    Properties().apply {
-        file.inputStream().use { load(it) }
-    }
+val secrets = rootProject.file("secrets.properties").inputStream().use {
+    Properties().apply { load(it) }
 }
 
 android {
@@ -27,16 +24,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField(
-            "String",
-            "BILLPLZ_API_KEY",
-            "\"${secrets?.getProperty("BILLPLZ_API_KEY") ?: "missing_api_key"}\""
-        )
-        buildConfigField(
-            "String",
-            "BILLPLZ_COLLECTION_ID",
-            "\"${secrets?.getProperty("BILLPLZ_COLLECTION_ID") ?: "missing_collection"}\""
-        )
+        buildConfigField("String", "BILLPLZ_API_KEY", "\"${secrets.getProperty("BILLPLZ_API_KEY")}\"")
+        buildConfigField("String", "BILLPLZ_COLLECTION_ID", "\"${secrets.getProperty("BILLPLZ_COLLECTION_ID")}\"")
     }
 
     buildTypes {
@@ -57,6 +46,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -75,6 +65,7 @@ dependencies {
     implementation(libs.androidx.webkit)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.moshi)
+    implementation(libs.moshi.kotlin)
     implementation(libs.okhttp3.logging.interceptor)
     /*
     implementation "com.squareup.retrofit2:converter-gson:2.9.0" <-- changed to moshi

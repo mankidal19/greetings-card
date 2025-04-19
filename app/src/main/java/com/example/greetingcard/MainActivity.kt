@@ -11,7 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.example.greetingcard.model.Message
+import com.example.greetingcard.data.Message
 import com.example.greetingcard.ui.theme.GreetingCardTheme
 import com.example.greetingcard.ui.theme.MessageCard
 
