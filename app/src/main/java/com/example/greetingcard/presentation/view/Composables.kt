@@ -66,7 +66,7 @@ fun MessageCard(
             onFeedButtonClick?.invoke(randomAmount)
         }) {
             Text(
-                text = "Feed ${message.author} for \nRM ${randomAmount/100.0}"
+                text = "Feed ${message.author} for \nRM ${"%.2f".format(randomAmount / 100.0)}"
             )
         }
     }

@@ -5,15 +5,19 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.greetingcard.data.Bill
@@ -21,6 +25,7 @@ import com.example.greetingcard.data.Message
 import com.example.greetingcard.presentation.view.BillWebViewScreen
 import com.example.greetingcard.ui.theme.GreetingCardTheme
 import com.example.greetingcard.presentation.view.MessageCard
+import com.example.greetingcard.presentation.viewmodel.BillPlzViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,41 +33,59 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GreetingCardTheme {
-                var showBillWebView by remember { mutableStateOf(false) }
+                val viewModel = remember { BillPlzViewModel() }
+                val billUrl by viewModel.billUrl.collectAsState()
+
+                var showProgressBar by remember { mutableStateOf(false) }
                 var billAmount by remember { mutableIntStateOf(0) }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Surface(modifier = Modifier.padding(innerPadding)) {
                         val currentContext = LocalContext.current
-                        if (showBillWebView) {
+                        billUrl?.let { currentBillUrl ->
                             BillWebViewScreen(
-                                bill = Bill(
-                                    "man.kidal19@gmail.com",
-                                    "Aiman",
-                                    billAmount // in MYR cents
-                                ),
+                                billUrl = currentBillUrl,
                                 onPaymentCompleted = { message ->
                                     Toast.makeText(
                                         currentContext,
-                                        message, Toast.LENGTH_SHORT
+                                        "$message - Pending for confirmation.",
+                                        Toast.LENGTH_SHORT
                                     ).show()
-                                    showBillWebView = false
+                                    showProgressBar = false
+                                    viewModel.clearBillUrl()
+                                },
+                                onBackPressed = {
+                                    showProgressBar = false
+                                    viewModel.clearBillUrl()
                                 }
                             )
-                        } else {
-                            MessageCard(
-                                message = Message(
-                                    "Mimi",
-                                    "Meeeeowwwwwwwwww"
-                                ),
-                                onFeedButtonClick = { amount ->
-                                    billAmount = amount
-                                    showBillWebView = true
-                                    // Toast.makeText(currentContext, "Feeding in progress!", Toast.LENGTH_SHORT).show()
+                        } ?: run {
+                            if (showProgressBar) {
+                                // Loading indicator while waiting for the bill URL.
+                                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                    CircularProgressIndicator()
                                 }
-                            )
-                        }
+                            } else {
+                                MessageCard(
+                                    message = Message(
+                                        "Mimi",
+                                        "Meeeeowwwwwwwwww"
+                                    ),
+                                    onFeedButtonClick = { amount ->
+                                        billAmount = amount
+                                        viewModel.createBill(
+                                            Bill(
+                                                "meowmeow@test.com",
+                                                "Aiman",
+                                                billAmount // in MYR cents
+                                            )
+                                        )
+                                        showProgressBar = true
+                                    }
+                                )
+                            }
 
+                        }
                     }
                 }
             }

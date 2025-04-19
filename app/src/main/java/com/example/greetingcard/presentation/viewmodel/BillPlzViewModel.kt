@@ -55,4 +55,8 @@ class BillPlzViewModel: ViewModel() {
             }
         }
     }
+
+    fun clearBillUrl() {
+        _billUrl.value = null
+    }
 }
